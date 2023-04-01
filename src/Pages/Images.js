@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Container, Image } from "react-bootstrap";
 
 const Images = () => {
   const [images, setImages] = useState([]);
@@ -15,11 +16,11 @@ const Images = () => {
   }, []);
 
   return (
-    <div>
+    <Container>
       {images.map((image) => (
-        <img src={image.url} alt={image.metadata.name} />
+        <Image fluid src={image.url} alt={image.metadata.name} />
       ))}
-    </div>
+    </Container>
   );
 };
 

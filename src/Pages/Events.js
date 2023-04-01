@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Card, Container } from "react-bootstrap";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -11,17 +12,20 @@ const Events = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Events</h1>
-      <ul>
-        {events.map((event) => (
-          <li key={event.id}>
-            <p>{event.name}</p>
-            {event.desc && <p>{event.desc}</p>}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Container>
+      {events.map((event) => (
+        <Card key={event.id}>
+          <Card.Img variant="top" src={event.thumbnail_url} />
+          <Card.Body>
+            <Card.Title>{event.name}</Card.Title>
+            {event.desc && <Card.Text>{event.desc}</Card.Text>}
+            {event.photoDir && (
+              <Card.Text>Photo directory: {event.photoDir}</Card.Text>
+            )}
+          </Card.Body>
+        </Card>
+      ))}
+    </Container>
   );
 };
 
