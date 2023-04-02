@@ -34,7 +34,7 @@ const ImageList = () => {
   };
 
   const handleSendEmail = () => {
-    alert(`Email ${email} sent for image ${selectedImage.metadata.name}`);
+    alert(`Email ${email} sent for image ${selectedImage.url}`);
     handleCloseModal();
   };
 
@@ -43,11 +43,8 @@ const ImageList = () => {
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
         <Masonry>
           {images.map((image) => (
-            <div
-              key={image.metadata.name}
-              onClick={() => handleOpenModal(image)}
-            >
-              <Image fluid src={image.url} alt={image.metadata.name} />
+            <div key={image.url} onClick={() => handleOpenModal(image)}>
+              <Image fluid src={image.url} />
             </div>
           ))}
         </Masonry>
