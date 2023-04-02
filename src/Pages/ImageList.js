@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Container, Image, Modal, Form, Button } from "react-bootstrap";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
-const Images = () => {
+const ImageList = () => {
   const [images, setImages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -89,4 +89,4 @@ const Images = () => {
   );
 };
 
-export default Images;
+export default ImageList;
