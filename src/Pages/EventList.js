@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Ratio } from "react-bootstrap";
 import { NavLink as Link } from "react-router-dom";
 
 const EventList = () => {
@@ -20,7 +20,15 @@ const EventList = () => {
         {events.map((event) => (
           <Col lg={4}>
             <Card key={event.id}>
-              <Card.Img variant="top" src={event.thumbnail_url} />
+              <Card.Img
+                variant="top"
+                src={event.thumbnail_url}
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  maxHeight: "300px",
+                }}
+              />
               <Card.Body>
                 <Card.Title>{event.name}</Card.Title>
                 {event.desc && <Card.Text>{event.desc}</Card.Text>}
