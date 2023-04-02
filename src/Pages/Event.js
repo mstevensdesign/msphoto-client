@@ -13,7 +13,7 @@ const Event = () => {
   useEffect(() => {
     async function fetchImages() {
       const response = await fetch(
-        "http://127.0.0.1:5001/mikestevensphoto-c810c/us-central1/app/images/event_id/" +
+        "http://127.0.0.1:5001/mikestevensphoto-c810c/us-central1/app/images/" +
           event_id
       );
       const data = await response.json();
@@ -37,7 +37,7 @@ const Event = () => {
   };
 
   const handleSendEmail = () => {
-    alert(`Email ${email} sent for image ${selectedImage.metadata.name}`);
+    alert(`Email ${email} sent for image ${selectedImage.metadata?.name}`);
     handleCloseModal();
   };
 
@@ -46,11 +46,8 @@ const Event = () => {
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
         <Masonry>
           {images.map((image) => (
-            <div
-              key={image.metadata.name}
-              onClick={() => handleOpenModal(image)}
-            >
-              <Image fluid src={image.url} alt={image.metadata.name} />
+            <div key={image.url} onClick={() => handleOpenModal(image)}>
+              <Image fluid src={image.url} />
             </div>
           ))}
         </Masonry>
