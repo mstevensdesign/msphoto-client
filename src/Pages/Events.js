@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Card, Container } from "react-bootstrap";
+import { Card, Container, Button } from "react-bootstrap";
+import { NavLink as Link } from "react-router-dom";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -10,6 +11,8 @@ const Events = () => {
       .then((data) => setEvents(data))
       .catch((error) => console.log(error));
   }, []);
+
+  console.log(events);
 
   return (
     <Container>
@@ -22,6 +25,9 @@ const Events = () => {
             {event.photoDir && (
               <Card.Text>Photo directory: {event.photoDir}</Card.Text>
             )}
+            <Button as={Link} to={`/images/event_id/${event.event_id}`}>
+              View Photos
+            </Button>
           </Card.Body>
         </Card>
       ))}
