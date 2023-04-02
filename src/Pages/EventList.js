@@ -16,17 +16,18 @@ const EventList = () => {
 
   return (
     <Container>
-      <Row>
+      <Row className="mt-3">
         {events.map((event) => (
-          <Col lg={4}>
-            <Card key={event.id}>
+          <Col lg={4} className="mb-3">
+            <Card key={event.id} className="text-center">
               <Card.Img
                 variant="top"
+                rounded={true}
                 src={event.thumbnail_url}
                 style={{
                   objectFit: "cover",
                   objectPosition: "center",
-                  maxHeight: "300px",
+                  maxHeight: "250px",
                 }}
               />
               <Card.Body>
