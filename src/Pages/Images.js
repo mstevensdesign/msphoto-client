@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Container, Image } from "react-bootstrap";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 const Images = () => {
   const [images, setImages] = useState([]);
@@ -16,11 +17,13 @@ const Images = () => {
   }, []);
 
   return (
-    <Container>
-      {images.map((image) => (
-        <Image fluid src={image.url} alt={image.metadata.name} />
-      ))}
-    </Container>
+    <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
+      <Masonry>
+        {images.map((image) => (
+          <Image fluid src={image.url} alt={image.metadata.name} />
+        ))}
+      </Masonry>
+    </ResponsiveMasonry>
   );
 };
 
