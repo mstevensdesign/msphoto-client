@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Container, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { NavLink as Link } from "react-router-dom";
 
 const EventList = () => {
@@ -16,21 +16,25 @@ const EventList = () => {
 
   return (
     <Container>
-      {events.map((event) => (
-        <Card key={event.id}>
-          <Card.Img variant="top" src={event.thumbnail_url} />
-          <Card.Body>
-            <Card.Title>{event.name}</Card.Title>
-            {event.desc && <Card.Text>{event.desc}</Card.Text>}
-            {event.photoDir && (
-              <Card.Text>Photo directory: {event.photoDir}</Card.Text>
-            )}
-            <Button as={Link} to={`/events/${event.event_id}`}>
-              View Photos
-            </Button>
-          </Card.Body>
-        </Card>
-      ))}
+      <Row>
+        {events.map((event) => (
+          <Col lg={4}>
+            <Card key={event.id}>
+              <Card.Img variant="top" src={event.thumbnail_url} />
+              <Card.Body>
+                <Card.Title>{event.name}</Card.Title>
+                {event.desc && <Card.Text>{event.desc}</Card.Text>}
+                {event.photoDir && (
+                  <Card.Text>Photo directory: {event.photoDir}</Card.Text>
+                )}
+                <Button as={Link} to={`/events/${event.event_id}`}>
+                  View Photos
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
     </Container>
   );
 };
