@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, Container, Button } from "react-bootstrap";
 import { NavLink as Link } from "react-router-dom";
 
-const Events = () => {
+const EventList = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Events = () => {
             {event.photoDir && (
               <Card.Text>Photo directory: {event.photoDir}</Card.Text>
             )}
-            <Button as={Link} to={`/images/event_id/${event.event_id}`}>
+            <Button as={Link} to={`/events/${event.event_id}`}>
               View Photos
             </Button>
           </Card.Body>
@@ -35,4 +35,4 @@ const Events = () => {
   );
 };
 
-export default Events;
+export default EventList;
