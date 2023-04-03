@@ -1,14 +1,6 @@
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Nav,
-  Navbar,
-  NavDropdown,
-} from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { useState } from "react";
-import { Routes, Route, NavLink as Link } from "react-router-dom";
+import { NavLink as Link } from "react-router-dom";
 
 //Firebase
 import { onAuthStateChanged } from "firebase/auth";
