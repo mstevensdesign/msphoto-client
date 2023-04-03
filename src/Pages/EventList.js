@@ -12,8 +12,6 @@ const EventList = () => {
       .catch((error) => console.log(error));
   }, []);
 
-  console.log(events);
-
   return (
     <Container>
       <Row className="mt-3">
