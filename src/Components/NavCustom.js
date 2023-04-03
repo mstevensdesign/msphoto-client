@@ -11,17 +11,9 @@ import { useState } from "react";
 import { Routes, Route, NavLink as Link } from "react-router-dom";
 
 //Firebase
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signOut,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../Config/firebase-config";
 const auth = getAuth(firebaseApp);
-const provider = new GoogleAuthProvider();
 
 function NavCustom() {
   const [currentUser, setCurrentUser] = useState(null);
