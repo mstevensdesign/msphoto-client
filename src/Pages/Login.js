@@ -6,6 +6,7 @@ import {
 } from "firebase/auth";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { auth } from "../Config/firebase-config";
 
@@ -14,6 +15,7 @@ const provider = new GoogleAuthProvider();
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  let navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -34,6 +36,7 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log(user);
+      navigate("/profile");
     } catch (error) {
       console.log(error.message);
     }
