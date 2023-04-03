@@ -33,9 +33,31 @@ const ImageList = () => {
     setEmail(event.target.value);
   };
 
-  const handleSendEmail = () => {
-    alert(`Email ${email} sent for image ${selectedImage.url}`);
-    handleCloseModal();
+  // const handleSendEmail = () => {
+  //   alert(`Email ${email} sent for image ${selectedImage.url}`);
+  //   handleCloseModal();
+  // };
+
+  const handleSendEmail = async () => {
+    const message = "Howdy There!  Here's your photo!";
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:5001/mikestevensphoto-c810c/us-central1/app/email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `email=${email}&message=${message}&url=${selectedImage.url}`,
+        }
+      );
+      const data = await response.json();
+      alert(data.message);
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      alert("Error sending email");
+    }
   };
 
   return (
