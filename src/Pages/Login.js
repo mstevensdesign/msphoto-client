@@ -7,7 +7,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 
 import firebaseApp from "../Config/firebase-config";
@@ -16,6 +16,19 @@ const provider = new GoogleAuthProvider();
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Sign in with Google
   const signInWithGoogle = async () => {
@@ -40,20 +53,17 @@ const Login = () => {
     }
   };
 
-  // Listen for authentication state changes
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("User is signed in");
-    } else {
-      console.log("User is signed out");
-    }
-  });
-
   return (
     <div>
-      <Button onClick={signInWithGoogle} disabled={loading}>
-        {loading ? "Loading..." : "Sign in with Google"}
-      </Button>
+      {user ? (
+        <Button onClick={signOutUser} disabled={loading}>
+          {loading ? "Loading..." : "Sign out"}
+        </Button>
+      ) : (
+        <Button onClick={signInWithGoogle} disabled={loading}>
+          {loading ? "Loading..." : "Sign in with Google"}
+        </Button>
+      )}
     </div>
   );
 };
