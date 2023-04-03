@@ -1,6 +1,4 @@
 import {
-  getAuth,
-  createUserWithEmailAndPassword,
   signOut,
   signInWithPopup,
   GoogleAuthProvider,
@@ -9,9 +7,8 @@ import {
 
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
+import { auth } from "../Config/firebase-config";
 
-import firebaseApp from "../Config/firebase-config";
-const auth = getAuth(firebaseApp);
 const provider = new GoogleAuthProvider();
 
 const Login = () => {

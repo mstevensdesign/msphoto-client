@@ -11,15 +11,14 @@ import { useState } from "react";
 import { Routes, Route, NavLink as Link } from "react-router-dom";
 
 //Firebase
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import firebaseApp from "../Config/firebase-config";
-const auth = getAuth(firebaseApp);
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../Config/firebase-config";
 
 function NavCustom() {
   const [currentUser, setCurrentUser] = useState(null);
 
   // listen for changes to the user's authentication state
-  onAuthStateChanged(getAuth(), (user) => {
+  onAuthStateChanged(auth, (user) => {
     setCurrentUser(user);
   });
 
