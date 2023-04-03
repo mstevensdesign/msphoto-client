@@ -6,6 +6,8 @@ import EventList from "./Pages/EventList";
 import Event from "./Pages/Event";
 import ImageList from "./Pages/ImageList";
 import Image from "./Pages/Image";
+import Profile from "./Pages/Profile";
+import Login from "./Pages/Login";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <NavCustom />
       <Routes>
         <Route path="/" element={<Home />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
         {/* <Route path="/events" element={<Events />}></Route> */}
         <Route path="/events">
           <Route index element={<EventList />} />

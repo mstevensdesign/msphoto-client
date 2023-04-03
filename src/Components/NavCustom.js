@@ -7,10 +7,30 @@ import {
   Navbar,
   NavDropdown,
 } from "react-bootstrap";
-
+import { useState } from "react";
 import { Routes, Route, NavLink as Link } from "react-router-dom";
 
+//Firebase
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import firebaseApp from "../Config/firebase-config";
+const auth = getAuth(firebaseApp);
+const provider = new GoogleAuthProvider();
+
 function NavCustom() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // listen for changes to the user's authentication state
+  onAuthStateChanged(getAuth(), (user) => {
+    setCurrentUser(user);
+  });
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -29,6 +49,17 @@ function NavCustom() {
             <Nav.Link eventKey="3" as={Link} to="/images">
               Images
             </Nav.Link>
+          </Nav>
+          <Nav>
+            {currentUser ? (
+              <Nav.Link eventKey="4" as={Link} to="/profile">
+                Profile
+              </Nav.Link>
+            ) : (
+              <Nav.Link eventKey="4" as={Link} to="/login">
+                Log In
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
