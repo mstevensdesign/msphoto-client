@@ -27,7 +27,7 @@ const EventList = () => {
                 style={{
                   objectFit: "cover",
                   objectPosition: "center",
-                  maxHeight: "250px",
+                  maxHeight: "220px",
                 }}
               />
               <Card.Body>
