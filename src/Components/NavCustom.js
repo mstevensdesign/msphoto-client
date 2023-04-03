@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar, Image } from "react-bootstrap";
 import { useState } from "react";
 import { NavLink as Link } from "react-router-dom";
 
@@ -12,10 +12,11 @@ function NavCustom() {
   // listen for changes to the user's authentication state
   onAuthStateChanged(auth, (user) => {
     setCurrentUser(user);
+    console.log(user.photoURL);
   });
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" collapseOnSelect>
       <Container>
         <Navbar.Brand as={Link} to="/">
           MSPHOTO
@@ -36,7 +37,14 @@ function NavCustom() {
           <Nav>
             {currentUser ? (
               <Nav.Link eventKey="4" as={Link} to="/profile">
-                Profile
+                <Image
+                  width={50}
+                  height={50}
+                  roundedCircle
+                  thumbnail
+                  src="https://lh3.googleusercontent.com/a/AGNmyxYYbtzlWaYqLcgMTlyvfr9bO1SLpxb24HjD4y2V=s96-c"
+                />
+                &nbsp; {currentUser.displayName}
               </Nav.Link>
             ) : (
               <Nav.Link eventKey="4" as={Link} to="/login">
