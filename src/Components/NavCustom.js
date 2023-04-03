@@ -12,7 +12,6 @@ function NavCustom() {
   // listen for changes to the user's authentication state
   onAuthStateChanged(auth, (user) => {
     setCurrentUser(user);
-    console.log(user.photoURL);
   });
 
   return (
