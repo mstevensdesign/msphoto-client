@@ -1,5 +1,18 @@
 import { useState, useEffect } from "react";
 import {
+  collection,
+  doc,
+  getDocs,
+  addDoc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { app, auth, db } from "../Config/firebase-config";
+
+import {
   Container,
   Image,
   Modal,
@@ -16,6 +29,7 @@ const ImageList = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [email, setEmail] = useState("");
   const [hoveredImage, setHoveredImage] = useState(null);
+  const [user, setUser] = useState(null);
 
   const overlayStyle = {
     position: "absolute",
@@ -46,6 +60,18 @@ const ImageList = () => {
       setImages(data);
     }
     fetchImages();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const handleOpenModal = (image) => {
@@ -92,6 +118,16 @@ const ImageList = () => {
     setHoveredImage(null);
   };
 
+  const handleFavorite = async (url) => {
+    // add favorite under users collection
+    updateDoc(doc(db, "users", user.email), {
+      favorites: arrayUnion(url),
+    }).then((res) => {
+      console.log("Favorite added: " + url);
+      console.log(res);
+    });
+  };
+
   return (
     <>
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
@@ -116,7 +152,8 @@ const ImageList = () => {
                   <div style={{ display: "flex", marginBottom: "20px" }}>
                     <Button
                       style={{ ...buttonStyle, backgroundColor: "gray" }}
-                      onClick={() => alert(`Added to favorites: ${image.url}`)}
+                      // onClick={() => alert(`Added to favorites: ${image.url}`)}
+                      onClick={() => handleFavorite(image.url)}
                     >
                       Favorite
                     </Button>
