@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { Container, Image, Modal, Form, Button } from "react-bootstrap";
+import {
+  Container,
+  Image,
+  Modal,
+  Form,
+  Button,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 const ImageList = () => {
@@ -7,6 +15,27 @@ const ImageList = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [email, setEmail] = useState("");
+  const [hoveredImage, setHoveredImage] = useState(null);
+
+  const overlayStyle = {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    height: "100%",
+    width: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flexDirection: "column",
+    color: "#fff",
+    fontSize: "1.5rem",
+    transition: "opacity 0.25s ease-in-out",
+  };
+
+  const buttonStyle = {
+    margin: "0.5rem",
+  };
 
   useEffect(() => {
     async function fetchImages() {
@@ -33,11 +62,6 @@ const ImageList = () => {
     setEmail(event.target.value);
   };
 
-  // const handleSendEmail = () => {
-  //   alert(`Email ${email} sent for image ${selectedImage.url}`);
-  //   handleCloseModal();
-  // };
-
   const handleSendEmail = async () => {
     const message = "Howdy There!  Here's your photo!";
     try {
@@ -60,25 +84,61 @@ const ImageList = () => {
     }
   };
 
+  const handleImageHover = (event, image) => {
+    setHoveredImage(image);
+  };
+
+  const handleImageLeave = () => {
+    setHoveredImage(null);
+  };
+
   return (
     <>
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
         <Masonry>
           {images.map((image) => (
-            <div key={image.url} onClick={() => handleOpenModal(image)}>
+            <div
+              key={image.url}
+              onMouseEnter={(event) => handleImageHover(event, image)}
+              onMouseLeave={handleImageLeave}
+              onClick={() => handleOpenModal(image)}
+              style={{ position: "relative" }}
+            >
               <Image fluid src={image.url} />
+              {hoveredImage === image && (
+                <div
+                  style={{
+                    ...overlayStyle,
+                    opacity: "1",
+                  }}
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <div style={{ display: "flex", marginBottom: "20px" }}>
+                    <Button
+                      style={{ ...buttonStyle, backgroundColor: "gray" }}
+                      onClick={() => alert(`Added to favorites: ${image.url}`)}
+                    >
+                      Favorite
+                    </Button>
+                    <Button
+                      style={buttonStyle}
+                      onClick={() => handleOpenModal(image)}
+                    >
+                      Send Email
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </Masonry>
       </ResponsiveMasonry>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Send Email for {selectedImage?.metadata?.name}
-          </Modal.Title>
+          <Modal.Title>{selectedImage?.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Image src={selectedImage?.url} thumbnail />
+          <Image fluid src={selectedImage?.url} />
           <Form>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
@@ -88,19 +148,15 @@ const ImageList = () => {
                 value={email}
                 onChange={handleEmailChange}
               />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
             </Form.Group>
           </Form>
         </Modal.Body>
-
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
           <Button variant="primary" onClick={handleSendEmail}>
-            Send
+            Send Email
           </Button>
         </Modal.Footer>
       </Modal>
