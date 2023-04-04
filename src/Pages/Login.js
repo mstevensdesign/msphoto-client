@@ -1,3 +1,5 @@
+import { collection, doc, getDocs, addDoc, setDoc } from "firebase/firestore";
+
 import {
   signOut,
   signInWithPopup,
@@ -8,7 +10,7 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import { auth } from "../Config/firebase-config";
+import { app, auth, db } from "../Config/firebase-config";
 
 const provider = new GoogleAuthProvider();
 
@@ -21,6 +23,7 @@ const Login = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        console.log(user);
       } else {
         setUser(null);
       }
@@ -36,6 +39,12 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log(user);
+      setDoc(doc(db, "users", user.email), {
+        email: user.email,
+        uid: user.uid,
+      }).then((res) => {
+        console.log("User Created: " + user.email);
+      });
       navigate("/profile");
     } catch (error) {
       console.log(error.message);
