@@ -3,6 +3,7 @@ import {
   collection,
   doc,
   getDocs,
+  getDoc,
   addDoc,
   setDoc,
   updateDoc,
@@ -30,6 +31,7 @@ const ImageList = () => {
   const [email, setEmail] = useState("");
   const [hoveredImage, setHoveredImage] = useState(null);
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
 
   const overlayStyle = {
     position: "absolute",
@@ -58,6 +60,7 @@ const ImageList = () => {
       );
       const data = await response.json();
       setImages(data);
+      // check for favorites
     }
     fetchImages();
   }, []);
@@ -66,6 +69,13 @@ const ImageList = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        const getUserProfile = async () => {
+          const docRef = doc(db, "users", user.email);
+          const docSnap = await getDoc(docRef).then((e) => {
+            setProfile(e.data());
+          });
+        };
+        getUserProfile();
       } else {
         setUser(null);
       }
@@ -151,7 +161,12 @@ const ImageList = () => {
                 >
                   <div style={{ display: "flex", marginBottom: "20px" }}>
                     <Button
-                      style={{ ...buttonStyle, backgroundColor: "gray" }}
+                      variant={
+                        profile.favorites.includes(image.url)
+                          ? "danger"
+                          : "light"
+                      }
+                      style={{ ...buttonStyle }}
                       // onClick={() => alert(`Added to favorites: ${image.url}`)}
                       onClick={() => handleFavorite(image.url)}
                     >
