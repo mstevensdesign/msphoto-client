@@ -29,9 +29,9 @@ function NavCustom() {
             <Nav.Link eventKey="2" as={Link} to="/events">
               Events
             </Nav.Link>
-            <Nav.Link eventKey="3" as={Link} to="/images">
+            {/* <Nav.Link eventKey="3" as={Link} to="/images">
               Images
-            </Nav.Link>
+            </Nav.Link> */}
           </Nav>
           <Nav>
             {currentUser ? (

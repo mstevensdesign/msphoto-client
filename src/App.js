@@ -20,12 +20,12 @@ function App() {
         {/* <Route path="/events" element={<Events />}></Route> */}
         <Route path="/events">
           <Route index element={<EventList />} />
-          <Route path=":event_id" element={<Event />} />
+          <Route path=":event_id" element={<Images />} />
         </Route>
-        <Route path="/images">
+        {/* <Route path="/images">
           <Route index element={<Images />} />
-          <Route path=":filename" element={<Image />} />
-        </Route>
+          <Route path=":event_id" element={<Images />} />
+        </Route> */}
       </Routes>
     </div>
   );
