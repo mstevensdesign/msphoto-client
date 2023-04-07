@@ -4,7 +4,7 @@ import { Routes, Route, NavLink as Link, useParams } from "react-router-dom";
 import Home from "./Pages/Home";
 import EventList from "./Pages/EventList";
 import Event from "./Pages/Event";
-import ImageList from "./Pages/ImageList";
+import Images from "./Pages/Images";
 import Image from "./Pages/Image";
 import Profile from "./Pages/Profile";
 import Login from "./Pages/Login";
@@ -23,7 +23,7 @@ function App() {
           <Route path=":event_id" element={<Event />} />
         </Route>
         <Route path="/images">
-          <Route index element={<ImageList />} />
+          <Route index element={<Images />} />
           <Route path=":filename" element={<Image />} />
         </Route>
       </Routes>
