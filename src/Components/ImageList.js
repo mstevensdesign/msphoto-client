@@ -119,9 +119,17 @@ function ImageList({ event }) {
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSendEmail}>
-            {isSending ? "Sending..." : "Send"}
-          </Button>
+
+          {!isSending && (
+            <Button variant="primary" onClick={handleSendEmail}>
+              Send
+            </Button>
+          )}
+          {isSending && (
+            <Button variant="danger" disabled>
+              Sending...
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </div>
