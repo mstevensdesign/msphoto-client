@@ -9,12 +9,15 @@ import {
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { auth } from "../Config/firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
 function ImageList({ event }) {
   const [images, setImages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [email, setEmail] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function fetchImages() {
@@ -25,6 +28,18 @@ function ImageList({ event }) {
       const data = await response.json().then((e) => setImages(e));
     }
     fetchImages();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        setEmail(user.email);
+      } else {
+        setUser(null);
+      }
+    });
+    return () => unsubscribe();
   }, []);
 
   const handleOpenModal = (image) => {
@@ -87,7 +102,7 @@ function ImageList({ event }) {
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
-                placeholder="Enter email"
+                placeholder={(user && user.email) || "Your Email"}
                 value={email}
                 onChange={handleEmailChange}
               />
