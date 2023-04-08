@@ -72,8 +72,33 @@ function ImageList({ event }) {
         }
       );
       const data = await response.json().then(setIsSending(false));
+      // Send Favorite
+      handleSendFavorite();
       alert(data.message);
       handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      alert("Error sending email");
+    }
+  };
+
+  const handleSendFavorite = async () => {
+    console.log("Sending favorite...");
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:5001/mikestevensphoto-c810c/us-central1/app/favorites",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            url: selectedImage.url,
+          }),
+        }
+      );
+      const data = await response.json().then((e) => console.log(e));
     } catch (error) {
       console.error(error);
       alert("Error sending email");
