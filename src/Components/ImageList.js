@@ -18,6 +18,7 @@ function ImageList({ event }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [email, setEmail] = useState("");
   const [user, setUser] = useState(null);
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     async function fetchImages() {
@@ -57,6 +58,7 @@ function ImageList({ event }) {
   };
 
   const handleSendEmail = async () => {
+    setIsSending(true);
     const message = "Howdy There!  Here's your photo!";
     try {
       const response = await fetch(
@@ -69,7 +71,7 @@ function ImageList({ event }) {
           body: `email=${email}&message=${message}&url=${selectedImage.url}`,
         }
       );
-      const data = await response.json();
+      const data = await response.json().then(setIsSending(false));
       alert(data.message);
       handleCloseModal();
     } catch (error) {
@@ -118,7 +120,7 @@ function ImageList({ event }) {
             Close
           </Button>
           <Button variant="primary" onClick={handleSendEmail}>
-            Send
+            {isSending ? "Sending..." : "Send"}
           </Button>
         </Modal.Footer>
       </Modal>
