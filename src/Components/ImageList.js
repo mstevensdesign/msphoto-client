@@ -120,14 +120,13 @@ function ImageList({ event }) {
             Close
           </Button>
 
-          {!isSending && (
-            <Button variant="primary" onClick={handleSendEmail}>
-              Send
-            </Button>
-          )}
-          {isSending && (
+          {isSending ? (
             <Button variant="danger" disabled>
               Sending...
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={handleSendEmail}>
+              Send
             </Button>
           )}
         </Modal.Footer>
