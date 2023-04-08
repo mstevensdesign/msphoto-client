@@ -6,7 +6,7 @@ import {
 } from "firebase/auth";
 
 import { useState, useEffect } from "react";
-import { Button, Container, Form, Col, Row } from "react-bootstrap";
+import { Button, Container, Form, Col, Row, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 import { auth } from "../Config/firebase-config";
@@ -15,6 +15,7 @@ const provider = new GoogleAuthProvider();
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [favorites, setFavorites] = useState([]); // get favs from api
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -27,6 +28,19 @@ const Login = () => {
     });
 
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    async function fetchFavorites() {
+      const response = await fetch(
+        "http://127.0.0.1:5001/mikestevensphoto-c810c/us-central1/app/favorites?email=mikestevensdesign@gmail.com"
+      );
+      const data = await response.json().then((e) => {
+        setFavorites(e);
+        console.log(e);
+      });
+    }
+    fetchFavorites();
   }, []);
 
   // Sign in with Google
@@ -81,6 +95,16 @@ const Login = () => {
                 {loading ? "Loading..." : "Sign in with Google"}
               </Button>
             )}
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col lg={8}>
+            <h2>Favorites</h2>
+            {favorites.map((image) => (
+              <div key={image}>
+                <Image fluid src={image} />
+              </div>
+            ))}
           </Col>
         </Row>
       </Container>
