@@ -1,109 +1,48 @@
 import { useState, useEffect } from "react";
-import { Container, Image, Modal, Form, Button } from "react-bootstrap";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import { useParams } from "react-router-dom";
+import { Container, Row, Col, Card, Button, Ratio } from "react-bootstrap";
+import { NavLink as Link } from "react-router-dom";
 
-const Event = () => {
-  const [images, setImages] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [email, setEmail] = useState("");
-  const { event_id } = useParams();
+const Events = () => {
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    async function fetchImages() {
-      const response = await fetch(
-        "http://127.0.0.1:5001/mikestevensphoto-c810c/us-central1/app/images/" +
-          event_id
-      );
-      const data = await response.json();
-      setImages(data);
-    }
-    fetchImages();
+    fetch("http://127.0.0.1:5001/mikestevensphoto-c810c/us-central1/app/events")
+      .then((response) => response.json())
+      .then((data) => setEvents(data))
+      .catch((error) => console.log(error));
   }, []);
 
-  const handleOpenModal = (image) => {
-    setSelectedImage(image);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedImage(null);
-    setShowModal(false);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleSendEmail = async () => {
-    const message = "Howdy There!  Here's your photo!";
-    try {
-      const response = await fetch(
-        "http://127.0.0.1:5001/mikestevensphoto-c810c/us-central1/app/email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `email=${email}&message=${message}&url=${selectedImage.url}`,
-        }
-      );
-      const data = await response.json();
-      alert(data.message);
-      handleCloseModal();
-    } catch (error) {
-      console.error(error);
-      alert("Error sending email");
-    }
-  };
-
   return (
-    <>
-      <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
-        <Masonry>
-          {images.map((image) => (
-            <div key={image.url} onClick={() => handleOpenModal(image)}>
-              <Image fluid src={image.url} />
-            </div>
-          ))}
-        </Masonry>
-      </ResponsiveMasonry>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Send Email for {selectedImage?.metadata?.name}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Image src={selectedImage?.url} thumbnail />
-          <Form>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={handleEmailChange}
+    <Container>
+      <Row className="mt-3">
+        {events.map((event) => (
+          <Col lg={4} className="mb-3" key={event.id}>
+            <Card key={event.id} className="text-center">
+              <Card.Img
+                variant="top"
+                src={event.thumbnail_url}
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  maxHeight: "220px",
+                }}
               />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSendEmail}>
-            Send
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+              <Card.Body>
+                <Card.Title>{event.name}</Card.Title>
+                {event.desc && <Card.Text>{event.desc}</Card.Text>}
+                {event.photoDir && (
+                  <Card.Text>Photo directory: {event.photoDir}</Card.Text>
+                )}
+                <Button as={Link} to={`/events/${event.event_id}`}>
+                  View Photos
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 };
 
-export default Event;
+export default Events;

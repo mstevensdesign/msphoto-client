@@ -2,10 +2,8 @@ import NavCustom from "./Components/NavCustom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, NavLink as Link, useParams } from "react-router-dom";
 import Home from "./Pages/Home";
-import EventList from "./Pages/EventList";
+import Events from "./Pages/Events";
 import Event from "./Pages/Event";
-import Images from "./Pages/Images";
-import Image from "./Pages/Image";
 import Profile from "./Pages/Profile";
 import Login from "./Pages/Login";
 
@@ -19,8 +17,8 @@ function App() {
         <Route path="/profile" element={<Profile />}></Route>
         {/* <Route path="/events" element={<Events />}></Route> */}
         <Route path="/events">
-          <Route index element={<EventList />} />
-          <Route path=":event_id" element={<Images />} />
+          <Route index element={<Events />} />
+          <Route path=":event_id" element={<Event />} />
         </Route>
         {/* <Route path="/images">
           <Route index element={<Images />} />
