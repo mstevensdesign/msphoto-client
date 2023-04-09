@@ -39,12 +39,10 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log(user);
-      setDoc(doc(db, "users", user.email), {
-        email: user.email,
-        uid: user.uid,
-      }).then((res) => {
-        console.log("User Created: " + user.email);
-      });
+
+      const userRef = doc(db, "cities", user.email);
+      setDoc(userRef, { uid: user.uid, email: user.email }, { merge: true });
+
       navigate("/profile");
     } catch (error) {
       console.log(error.message);
